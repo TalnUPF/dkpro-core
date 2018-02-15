@@ -233,7 +233,7 @@ public class BratWriter extends JCasFileWriter_ImplBase
         conf = new BratConfiguration();
         
         warnings = new LinkedHashSet<String>();
-        spanTypes= new HashMap<>();
+        spanTypes= new LinkedHashMap<>();
         for (String s: spanTypesVals){
         	String[] parts=s.split(":");
         	LinkedList<String>list;
@@ -336,15 +336,22 @@ public class BratWriter extends JCasFileWriter_ImplBase
 
         // Go through all the annotations but only handle the ones that have no references to
         // other annotations.
+        int level=0;
         for (String currentType: spanTypes.keySet()){
+            level++;
              for (FeatureStructure fs : selectAll(aJCas)) {
                 String typeName=fs.getType().getName();
                 String superType = fs.getCAS().getTypeSystem().getParent(fs.getType()).getName();
+                if (excludeTypes.contains(typeName) || excludeTypes.contains(superType) ) {
+                    getLogger().debug("Excluding [" + fs.getType().getName() + "]");
+                    continue;
+                }
                 if (currentType.equalsIgnoreCase(typeName) || currentType.equalsIgnoreCase(superType)) {
-                    writeTextAnnotation(doc, (AnnotationFS) fs);
+                    writeTextAnnotation(level, doc, (AnnotationFS) fs);
                 }          
         	}
         }
+        level++; //if used afterwards
         for (FeatureStructure fs : selectAll(aJCas)) {
             // Skip document annotation
             if (fs == aJCas.getDocumentAnnotationFs()) {
@@ -466,10 +473,10 @@ public class BratWriter extends JCasFileWriter_ImplBase
         }
     }
     
-    private BratEventAnnotation writeEventAnnotation(BratAnnotationDocument aDoc, AnnotationFS aFS)
+    private BratEventAnnotation writeEventAnnotation(int level,BratAnnotationDocument aDoc, AnnotationFS aFS)
     {
         // Write trigger annotation
-        BratTextAnnotation trigger = new BratTextAnnotation(nextTextAnnotationId, 
+        BratTextAnnotation trigger = new BratTextAnnotation(level,nextTextAnnotationId, 
                 getBratType(aFS.getType()), aFS.getBegin(), aFS.getEnd(), aFS.getCoveredText());
         nextTextAnnotationId++;
         
@@ -653,7 +660,7 @@ public class BratWriter extends JCasFileWriter_ImplBase
         }
     }
 
-    private void writeTextAnnotation(BratAnnotationDocument aDoc, AnnotationFS aFS)
+    private void writeTextAnnotation(int level,BratAnnotationDocument aDoc, AnnotationFS aFS)
     {
         String superType = getBratType(aFS.getCAS().getTypeSystem().getParent(aFS.getType()));
         String type = getBratType(aFS.getType());
@@ -685,7 +692,7 @@ public class BratWriter extends JCasFileWriter_ImplBase
 	        	E.printStackTrace();
 	        }  
  
-		    BratTextAnnotation anno = new BratTextAnnotation(nextTextAnnotationId, value,
+		    BratTextAnnotation anno = new BratTextAnnotation(level,nextTextAnnotationId, value,
 		            aFS.getBegin(), aFS.getEnd(), aFS.getCoveredText());
 		    nextTextAnnotationId++;
 		

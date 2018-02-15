@@ -43,9 +43,9 @@ public class BratTextAnnotation
     private final int end;
     private final String text;
 
-    public BratTextAnnotation(int aId, String aType, int aBegin, int aEnd, String aText)
+    public BratTextAnnotation(int level, int aId, String aType, int aBegin, int aEnd, String aText)
     {    	
-        this("T" + String.format("%04d", aId), aType, aBegin, aEnd, aText);
+        this(String.format("%02d",level)+"-"+aId, aType, aBegin, aEnd, aText);
     }
 
     private BratTextAnnotation(String aId, String aType, int aBegin, int aEnd, String aText)
