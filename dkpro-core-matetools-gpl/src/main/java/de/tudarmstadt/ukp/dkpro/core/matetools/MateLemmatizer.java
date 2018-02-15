@@ -123,7 +123,10 @@ public class MateLemmatizer
 
             List<String> forms = new LinkedList<String>();
             forms.add(CONLLReader09.ROOT);
-            forms.addAll(JCasUtil.toText(tokens));
+            for(Token token : tokens){
+            	forms.add(token.getText());
+            }
+            //forms.addAll(JCasUtil.toText(tokens));
 
             SentenceData09 sd = new SentenceData09();
             sd.init(forms.toArray(new String[0]));

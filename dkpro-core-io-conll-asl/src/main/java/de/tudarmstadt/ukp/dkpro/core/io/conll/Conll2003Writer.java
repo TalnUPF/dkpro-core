@@ -153,7 +153,7 @@ public class Conll2003Writer
                     namedEntity = row.ne;
                 }
 
-                aOut.printf("%s %s %s %s\n", row.token.getCoveredText(), pos, chunk, namedEntity);
+                aOut.printf("%s %s %s %s\n", row.token.getText(), pos, chunk, namedEntity);
             }
 
             aOut.println();
