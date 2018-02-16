@@ -101,8 +101,18 @@ public class CoreNlpSegmenter
     @ConfigurationParameter(name = PARAM_TOKEN_REGEXES_TO_DISCARD, mandatory = false, defaultValue = {})
     private Set<String> tokenRegexesToDiscard;
     
+    /**
+     * Location of specific Arabic model.
+     */
+    public static final String PARAM_MODEL_LOCATION = "modelLocation";
+    @ConfigurationParameter(name = PARAM_MODEL_LOCATION, mandatory = false)
+    private String modelLocation;
+    
     private ModelProviderBase<WordsToSentencesAnnotator> sentenceAnnotator;
     private ModelProviderBase<TokenizerAnnotator> tokenizerAnnotator;
+    
+    private static final String DEFAULT_SEG_LOC_AR =
+    	    "edu/stanford/nlp/models/segmenter/arabic/arabic-segmenter-atb+bn+arztrain.ser.gz";
     
     @Override
     public void initialize(UimaContext aContext)
@@ -128,6 +138,14 @@ public class CoreNlpSegmenter
                 //coreNlpProps.setProperty("tokenize.whitespace", "false");
                 //coreNlpProps.setProperty("tokenize.options", null);
                 //coreNlpProps.setProperty("tokenize.keepeol", "false");
+                
+                if (props.getProperty(LANGUAGE) == "ar") {
+                	if (modelLocation != null) {
+                		coreNlpProps.setProperty("segment.model", modelLocation);
+                	} else {
+                		coreNlpProps.setProperty("segment.model", DEFAULT_SEG_LOC_AR);
+                	}
+                }
                 
                 String extraOptions = null;
                 
