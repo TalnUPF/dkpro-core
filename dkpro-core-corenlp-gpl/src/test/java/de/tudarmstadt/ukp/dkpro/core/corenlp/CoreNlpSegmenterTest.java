@@ -18,17 +18,24 @@
  */
 package de.tudarmstadt.ukp.dkpro.core.corenlp;
 
+import static java.util.Arrays.asList;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.util.JCasUtil.select;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.junit.Rule;
 import org.junit.Test;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.testing.AssertAnnotations;
 import de.tudarmstadt.ukp.dkpro.core.testing.DkproTestContext;
@@ -74,6 +81,32 @@ public class CoreNlpSegmenterTest
                 "abandone", "la", "sala", "." };
         
         AssertAnnotations.assertToken(tokens, select(jcas, Token.class));
+    }
+    
+    @Test
+    public void testArabic() throws Exception
+    {
+        JCas jcas = JCasFactory.createJCas();
+        jcas.setDocumentLanguage("ar");
+        jcas.setDocumentText("هل من المهم مراقبة وزن الرضيع خلال السنة الاولى من عمره؟\n"
+        		+ " هل يجب وزن و قياس الطفل خلال السنة الاولى من عمره ؟\n");
+        
+        AnalysisEngine aed = createEngine(CoreNlpSegmenter.class);
+        aed.process(jcas);
+        String[] expectedTokens = { "هل", "من", "المهم", "مراقبة", "وزن", "الرضيع", "خلال", "السنة", "الاولى", "من", "عمر", "ه", "؟", 
+        		"هل", "يجب", "وزن", "و", "قياس", "الطفل", "خلال", "السنة", "الاولى", "من", "عمر", "ه", "؟"};
+        String[] expectedSentences = { "هل من المهم مراقبة وزن الرضيع خلال السنة الاولى من عمره؟", "هل يجب وزن و قياس الطفل خلال السنة الاولى من عمره ؟"};
+        
+        List<String> sentences = new ArrayList<String>();
+	    List<String> tokens = new ArrayList<String>();
+        for (Sentence sentence : select(jcas, Sentence.class)) {
+            sentences.add(sentence.getCoveredText());
+            for (Token token : JCasUtil.selectCovered(Token.class, sentence)) {
+                tokens.add(token.getText());
+            }
+        }
+        assertEquals(asList(expectedSentences), sentences);
+        assertEquals(asList(expectedTokens), tokens);
     }
     
     @Test
