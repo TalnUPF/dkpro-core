@@ -128,7 +128,9 @@ public class MateMorphTagger
 
                 List<String> forms = new LinkedList<String>();
                 forms.add(CONLLReader09.ROOT);
-                forms.addAll(JCasUtil.toText(tokens));
+                for(Token token : tokens){
+                	forms.add(token.getText());
+                }
 
                 List<String> lemmas = new LinkedList<String>();
                 lemmas.add(CONLLReader09.ROOT_LEMMA);
