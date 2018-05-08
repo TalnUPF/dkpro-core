@@ -170,6 +170,13 @@ public class StanfordSegmenter
     public static final String PARAM_ALLOW_EMPTY_SENTENCES = "allowEmptySentences";
     @ConfigurationParameter(name = PARAM_ALLOW_EMPTY_SENTENCES, mandatory = true, defaultValue = "false")
     private boolean allowEmptySentences;
+    
+    /**
+     * Additional options that should be passed to the tokenizers.
+     */
+    public static final String PARAM_OPTIONS = "options";
+    @ConfigurationParameter(name = PARAM_OPTIONS, mandatory = false, defaultValue = "")
+    private String options;
 
     /**
      * Additional options that should be passed to the tokenizers. The available options depend on
@@ -189,7 +196,7 @@ public class StanfordSegmenter
         
         if (isWriteToken()) {
             casTokens = new ArrayList<Token>();
-            final Tokenizer<?> tokenizer = getTokenizer(language, aText);
+            final Tokenizer<?> tokenizer = getTokenizer(language, aText, options);
 
             List<?> tokens = tokenizer.tokenize();
             for (int i = 0; i < tokens.size(); i++) {
@@ -258,7 +265,7 @@ public class StanfordSegmenter
         }
     }
 
-    private Tokenizer getTokenizer(final String aLanguage, final String aText)
+    private Tokenizer getTokenizer(final String aLanguage, final String aText, final String options)
         throws AnalysisEngineProcessException
     {
         InternalTokenizerFactory tk = tokenizerFactories.get(aLanguage);
@@ -277,22 +284,22 @@ public class StanfordSegmenter
         }
         
         
-        return tk.create(aText);
+        return tk.create(aText, options);
     }
 
     private static interface InternalTokenizerFactory
     {
-        Tokenizer<?> create(String s);
+        Tokenizer<?> create(String s, String options);
     }
 
     private static class InternalPTBTokenizerFactory
         implements InternalTokenizerFactory
     {
         @Override
-        public Tokenizer<?> create(final String s)
+        public Tokenizer<?> create(final String s, final String options)
         {
 //            TokenizerFactory<CoreLabel> f = PTBTokenizer.factory(new CoreLabelTokenFactory(), "invertible,ptb3Escaping=false");
-            return new PTBTokenizer<CoreLabel>(new StringReader(s),new CoreLabelTokenFactory(),"invertible");
+            return new PTBTokenizer<CoreLabel>(new StringReader(s),new CoreLabelTokenFactory(),"invertible" + (!options.equals("") ? "," + options : ""));
         }
     }
 
@@ -315,7 +322,7 @@ public class StanfordSegmenter
         implements InternalTokenizerFactory
     {
         @Override
-        public Tokenizer<?> create(final String s)
+        public Tokenizer<?> create(final String s, final String options)
         {
             return ArabicTokenizer.newArabicTokenizer(new StringReader(s), new Properties());
         }
@@ -325,9 +332,9 @@ public class StanfordSegmenter
         implements InternalTokenizerFactory
     {
         @Override
-        public Tokenizer<?> create(final String s)
+        public Tokenizer<?> create(final String s, final String options)
         {
-            return FrenchTokenizer.factory().getTokenizer(new StringReader(s), "tokenizeNLs=false");
+            return FrenchTokenizer.factory().getTokenizer(new StringReader(s), "tokenizeNLs=false" + (!options.equals("") ? "," + options : ""));
         }
     }
 
@@ -335,9 +342,9 @@ public class StanfordSegmenter
         implements InternalTokenizerFactory
     {
         @Override
-        public Tokenizer<?> create(final String s)
+        public Tokenizer<?> create(final String s, final String options)
         {
-            return SpanishTokenizer.factory(new CoreLabelTokenFactory(), null)
+            return SpanishTokenizer.factory(new CoreLabelTokenFactory(), options)
                     .getTokenizer(new StringReader(s));
         }
     }
