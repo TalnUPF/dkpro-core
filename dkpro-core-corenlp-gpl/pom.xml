@@ -27,6 +27,7 @@
     <relativePath>../dkpro-core-gpl</relativePath>
   </parent>
   <artifactId>de.tudarmstadt.ukp.dkpro.core.corenlp-gpl</artifactId>
+  <version>1.9.1-taln</version>
   <packaging>jar</packaging>
   <name>DKPro Core GPL - Stanford CoreNLP Suite (v ${corenlp.version}) (GPL)</name>
   <url>https://dkpro.github.io/dkpro-core/</url>
@@ -92,13 +93,13 @@
       <version>${corenlp.version}</version>
       <classifier>models</classifier>
       </dependency>
-    -->
 	<dependency>
 		<groupId>edu.stanford.nlp</groupId>
 		<artifactId>stanford-corenlp</artifactId>
 		<version>${corenlp.version}</version>
 		<classifier>models-arabic</classifier>
 	</dependency>
+	-->
     <dependency>
       <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
       <artifactId>de.tudarmstadt.ukp.dkpro.core.api.lexmorph-asl</artifactId>
@@ -135,7 +136,7 @@
       <groupId>eu.openminted.share.annotations</groupId>
       <artifactId>omtd-share-annotations-api</artifactId>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -144,7 +145,7 @@
       <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
       <artifactId>de.tudarmstadt.ukp.dkpro.core.testing-asl</artifactId>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
       <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-model-coref-en-default</artifactId>
@@ -570,6 +571,18 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <distributionManagement>
+		<repository>
+		    <id>maven-releases</id>
+		    <name>Internal Release Repository</name>
+		    <url>http://maven-taln.s.upf.edu/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+		    <id>maven-snapshots</id>
+		    <name>Internal Snapshot Repository</name>
+		    <url>http://maven-taln.s.upf.edu/repository/maven-snapshots/</url>
+		</snapshotRepository>
+    </distributionManagement>
   <build>
     <pluginManagement>
       <plugins>
@@ -589,6 +602,61 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+    	<plugin>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>2.17</version>
+          <executions>
+            <execution>
+              <id>checkstyle-check</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <configLocation>dkpro-core/checkstyle.xml</configLocation>
+                <propertyExpansion>basedir=/home/ivan/git/dkpro-core/dkpro-core-corenlp-gpl</propertyExpansion>
+                <consoleOutput>true</consoleOutput>
+                <failOnViolation>true</failOnViolation>
+                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                <includeResources>false</includeResources>
+                <includeTestResources>false</includeTestResources>
+                <logViolationsToConsole>true</logViolationsToConsole>
+                <maxAllowedViolations>0</maxAllowedViolations>
+                <violationSeverity>error</violationSeverity>
+                <skip>true</skip>
+              </configuration>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.dkpro.core</groupId>
+              <artifactId>dkpro-core-build</artifactId>
+              <version>1.9.1</version>
+              <scope>compile</scope>
+            </dependency>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>8.8</version>
+              <scope>compile</scope>
+            </dependency>
+          </dependencies>
+          <inherited>true</inherited>
+          <configuration>
+            <configLocation>dkpro-core/checkstyle.xml</configLocation>
+            <propertyExpansion>basedir=/home/ivan/git/dkpro-core/dkpro-core-corenlp-gpl</propertyExpansion>
+            <consoleOutput>true</consoleOutput>
+            <failOnViolation>true</failOnViolation>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <includeResources>false</includeResources>
+            <includeTestResources>false</includeTestResources>
+            <logViolationsToConsole>true</logViolationsToConsole>
+            <maxAllowedViolations>0</maxAllowedViolations>
+            <violationSeverity>error</violationSeverity>
+          </configuration>
+        </plugin>
+    </plugins>
   </build>
   <profiles>
     <profile>
