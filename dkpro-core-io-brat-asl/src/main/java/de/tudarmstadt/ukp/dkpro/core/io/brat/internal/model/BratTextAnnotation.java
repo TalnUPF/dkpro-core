@@ -42,6 +42,12 @@ public class BratTextAnnotation
     private final int begin;
     private final int end;
     private final String text;
+    
+    public BratTextAnnotation(int level, int aId, String aType, int aBegin, int aEnd, String aText)
+        
+    {      
+        this(String.format("%02d",level)+"-"+aId, aType, aBegin, aEnd, aText);
+     }   
 
     public BratTextAnnotation(int aId, String aType, int aBegin, int aEnd, String aText)
     {
