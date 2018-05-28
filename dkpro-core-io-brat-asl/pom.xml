@@ -23,7 +23,7 @@
     <version>1.9.1</version>
     <relativePath>../dkpro-core-asl</relativePath>
   </parent>
-  <version>1.9.2-taln</version>
+  <version>1.9.1-taln</version>
   <artifactId>de.tudarmstadt.ukp.dkpro.core.io.brat-asl</artifactId>
   <packaging>jar</packaging>
   <name>DKPro Core ASL - IO - brat file format</name>
