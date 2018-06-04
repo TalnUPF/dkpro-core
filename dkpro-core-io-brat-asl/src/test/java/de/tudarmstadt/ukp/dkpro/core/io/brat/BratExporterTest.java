@@ -38,6 +38,7 @@ import org.junit.Test;
 import de.tudarmstadt.ukp.dkpro.core.io.brat.BratExporter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.testing.DkproTestContext;
+import edu.upf.taln.uima.conceptScorer.ChunkerIndex;
 
 
 //NOTE: This file contains Asciidoc markers for partial inclusion of this file in the documentation
@@ -97,8 +98,27 @@ public class BratExporterTest
                 XmiReader.PARAM_PATTERNS, "*.xmi",
                 XmiReader.PARAM_TYPE_SYSTEM_FILE, "src/test/resources/xmi/TypeSystem.xml"
                 );
-          
-         SimplePipeline.runPipeline( reader,pipelineOut);
+                  
+ 
+
+ 
+                  String DOMAIN="jihad";
+                 // public static String DOMAIN="quran";
+                 String REF_DOMAIN="news"; 
+                 String SOLR_URL="http://ipatdoc.taln.upf.edu:8080/multisensor/use_cases_en";        
+                 AnalysisEngineDescription scorer= createEngineDescription(
+                                 ChunkerIndex.class,
+                                 ChunkerIndex.PARAM_REFSOLR,SOLR_URL,
+                                 ChunkerIndex.PARAM_SOLR,SOLR_URL,
+                                 ChunkerIndex.PARAM_DOMAINFIELD,"useCase",
+                                 ChunkerIndex.PARAM_REFDOMAIN,REF_DOMAIN,
+                                 ChunkerIndex.PARAM_DOMAIN,DOMAIN,
+                                 ChunkerIndex.PARAM_TEXTFIELD,"text",
+                                 ChunkerIndex.PARAM_INDEX,false,
+                                 ChunkerIndex.PARAM_SCORING,true);
+      
+                 
+         SimplePipeline.runPipeline( reader,scorer,pipelineOut);
          
          
          System.out.println("documents processed");
