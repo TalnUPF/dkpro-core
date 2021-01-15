@@ -28,7 +28,7 @@
   <name>DKPro Core ASL - UDPipe (v ${udpipe.version})</name>
   <url>https://dkpro.github.io/dkpro-core/</url>
   <properties>
-    <udpipe.version>1.1.0</udpipe.version>
+    <udpipe.version>1.2.0</udpipe.version>
   </properties>
   <dependencies>
     <dependency>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.dkpro.core</groupId>
       <artifactId>dkpro-core-udpipe-bin</artifactId>
-      <version>20170425.0</version>
+      <version>20170802.0</version>
     </dependency>
     <dependency>
       <groupId>eu.openminted.share.annotations</groupId>
@@ -123,32 +123,32 @@
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-segmenter-en-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-tagger-en-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-parser-en-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-segmenter-no-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-tagger-no-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-parser-no-ud</artifactId>
-        <version>20160523.1</version>
+        <version>20191206.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
