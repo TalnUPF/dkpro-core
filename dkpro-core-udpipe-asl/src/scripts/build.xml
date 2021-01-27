@@ -115,6 +115,87 @@
         </install-model-stub>
 	</target>
 
+    <target name="es">
+        <antcall target="es-ud-segmenter"/>
+        <antcall target="es-ud-tagger"/>
+        <antcall target="es-ud-parser"/>
+	</target>
+
+	<target name="es-ud-upstream" depends="download-models">
+		<install-upstream-file
+            file="target/download/models/spanish-ancora-ud-2.5-191206.udpipe" 
+            md5="08e63ea07501b2917d29c011276a499a"
+            groupId="org.dkpro.core" 
+            artifactIdBase="dkpro-core-udpipe"
+            version="20191206"
+            tool="multiple" 
+            language="es" 
+            variant="ud" 
+            extension="udpipe"/>
+	</target>
+	
+    <target name="es-ud-segmenter" depends="es-ud-upstream">
+        <install-model-stub
+            groupId="org.dkpro.core" 
+            artifactIdBase="dkpro-core-udpipe"
+            version="20191206.1"
+            targetGroupId="org.dkpro.core"
+            targetArtifactId="dkpro-core-udpipe-upstream-multiple-es-ud"
+            targetVersion="20191206"
+            targetLocation="classpath:/${outputPackage}/multiple-es-ud.udpipe"
+            tool="segmenter" 
+            language="es" 
+            variant="ud">
+            <entry key="DC.title" value="Universal Dependencies 2.5 (191206) Segmenter Model for UDPipe"/>
+            <entry key="DC.creator" value="Milan Straka"/>
+            <entry key="DC.identifier" value="http://hdl.handle.net/11234/1-3131#english-ud-2.5-191206.udpipe"/>
+            <entry key="DC.rights" value="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+        </install-model-stub>
+    </target>
+
+    <target name="es-ud-tagger" depends="es-ud-upstream">
+        <install-model-stub
+            groupId="org.dkpro.core" 
+            artifactIdBase="dkpro-core-udpipe"
+            version="20191206.1"
+            targetGroupId="org.dkpro.core"
+            targetArtifactId="dkpro-core-udpipe-upstream-multiple-es-ud"
+            targetVersion="20191206"
+            targetLocation="classpath:/${outputPackage}/multiple-es-ud.udpipe"
+            tool="tagger" 
+            language="es" 
+            variant="ud">
+            <entry key="DC.title" value="Universal Dependencies 2.5 (191206) POS-Tagger Model for UDPipe"/>
+            <entry key="DC.creator" value="Milan Straka"/>
+            <entry key="DC.identifier" value="http://hdl.handle.net/11234/1-3131#english-ud-2.5-191206.udpipe"/>
+            <entry key="DC.rights" value="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+            <entry key="pos.tagset" value="ptb"/>
+            <entry key="pos.coarse.tagset" value="ud"/>
+        </install-model-stub>
+    </target>
+
+	<target name="es-ud-parser" depends="es-ud-upstream">
+        <install-model-stub
+            groupId="org.dkpro.core" 
+            artifactIdBase="dkpro-core-udpipe"
+            version="20191206.1"
+        	targetGroupId="org.dkpro.core"
+        	targetArtifactId="dkpro-core-udpipe-upstream-multiple-es-ud"
+        	targetVersion="20191206"
+        	targetLocation="classpath:/${outputPackage}/multiple-es-ud.udpipe"
+            tool="parser" 
+            language="es" 
+            variant="ud">
+        	<entry key="DC.title" value="Universal Dependencies 2.5 (191206) Parser Models for UDPipe"/>
+    	    <entry key="DC.creator" value="Milan Straka"/>
+    	    <entry key="DC.identifier" value="http://hdl.handle.net/11234/1-3131#english-ud-2.5-191206.udpipe"/>
+    	    <entry key="DC.rights" value="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+    	    <entry key="pos.tagset" value="ptb"/>
+            <entry key="pos.coarse.tagset" value="ud"/>
+            <entry key="dependency.tagset" value="universal"/>
+        </install-model-stub>
+	</target>
+
     <target name="no">
         <antcall target="no-ud-segmenter"/>
         <antcall target="no-ud-tagger"/>
