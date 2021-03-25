@@ -150,7 +150,7 @@ public class UDPipeSegmenter
                         new IllegalStateException(error.getMessage()));
             }
             
-            int sentenceStart = -1;
+            Integer sentenceStart = null;
             int sentenceEnd = -1;
 
             int mIdx = 0;
@@ -158,7 +158,7 @@ public class UDPipeSegmenter
             
             Words words = sentence.getWords();
             MultiwordTokens multiwords = sentence.getMultiwordTokens();
-            for (int i = 1; i < words.size(); i++) {
+            for (int idx = 1; idx < words.size(); idx++) {
                 
                 if (multiword == null && mIdx < multiwords.size()) {
                     multiword = multiwords.get(mIdx);
@@ -166,17 +166,17 @@ public class UDPipeSegmenter
                 }
                 
                 Token token;
-                if (multiword != null && multiword.getIdFirst() == i) {
+                if (multiword != null && multiword.getIdFirst() == idx) {
                     token = multiword;
-                    i = multiword.getIdLast();
+                    idx = multiword.getIdLast();
                     multiword = null;
                     
                 } else {
-                    token = words.get(i);
+                    token = words.get(idx);
                 }
                 
                 int wordStart = (int) token.getTokenRangeStart();
-                if (i == 1) {
+                if (sentenceStart == null) {
                     sentenceStart = wordStart;
                 }
                 int wordEnd = (int) token.getTokenRangeEnd();
@@ -184,15 +184,15 @@ public class UDPipeSegmenter
                 sentenceEnd = wordEnd;
                 if (wordStart < 0 || wordEnd < 0 || wordStart > wordEnd) {
                     throw new AnalysisEngineProcessException(
-                            new IllegalStateException("Invalid word range! (sentence idx: " + sentenceIdx + ", word index: " + i + ", start: " + wordStart + ", end: " + wordEnd + ")"));
+                            new IllegalStateException("Invalid word range! (sentence idx: " + sentenceIdx + ", word index: " + idx + ", start: " + wordStart + ", end: " + wordEnd + ")"));
                 } else {
                     createToken(aJCas, wordStart + aZoneBegin, wordEnd + aZoneBegin);
                 }
             }
 
-            if (sentenceStart < 0 || sentenceEnd < 0 || sentenceStart > sentenceEnd) {
+            if (sentenceStart == null || sentenceEnd < 0 || sentenceStart > sentenceEnd) {
                 throw new AnalysisEngineProcessException(
-                        new IllegalStateException("Invalid sentece range! (sentence idx: " + sentenceIdx + ", start: " + sentenceStart + ", end: " + sentenceEnd + ")"));
+                        new IllegalStateException("Invalid sentence range! (sentence idx: " + sentenceIdx + ", start: " + sentenceStart + ", end: " + sentenceEnd + ")"));
             } else {
                 createSentence(aJCas, sentenceStart + aZoneBegin, sentenceEnd + aZoneBegin);
             }

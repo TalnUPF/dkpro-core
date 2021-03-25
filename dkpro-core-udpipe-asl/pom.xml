@@ -199,6 +199,9 @@
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-no-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-tagger-no-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-parser-no-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-pt-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-tagger-pt-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-parser-pt-ud</usedDependency>
             </usedDependencies>
           </configuration>
         </plugin>
