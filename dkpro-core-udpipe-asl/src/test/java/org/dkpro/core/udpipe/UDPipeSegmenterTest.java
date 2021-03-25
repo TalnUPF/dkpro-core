@@ -63,6 +63,19 @@ public class UDPipeSegmenterTest
 
     }
         
+    @Test
+    public void testPortuguese()
+        throws Exception
+    {
+        runTest("pt", null,
+                "O território dentro das fronteiras atuais da República Portuguesa tem sido continuamente povoado desde os tempos pré-históricos. Ocupado por celtas, como os galaicos e os lusitanos, foi integrado na República Romana.",
+                new String[] { "O território dentro das fronteiras atuais da República Portuguesa tem sido continuamente povoado desde os tempos pré-históricos.",
+                        "Ocupado por celtas, como os galaicos e os lusitanos, foi integrado na República Romana." },
+                new String[] { "O", "território", "dentro", "das", "fronteiras", "atuais", "da", "República", "Portuguesa", "tem", "sido", "continuamente", "povoado", "desde", "os", "tempos", "pré-históricos", ".",
+                        "Ocupado", "por", "celtas", ",", "como", "os", "galaicos", "e", "os", "lusitanos", ",", "foi", "integrado", "na", "República", "Romana", "." });
+
+    }
+
     private void runTest(String language, String aVariant, String testDocument, String[] sExpected,
             String[] tExpected)
         throws Exception

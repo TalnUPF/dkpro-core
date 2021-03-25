@@ -36,7 +36,10 @@ import org.dkpro.core.udpipe.internal.UDPipeUtils;
 
 import cz.cuni.mff.ufal.udpipe.InputFormat;
 import cz.cuni.mff.ufal.udpipe.Model;
-import cz.cuni.mff.ufal.udpipe.Word;
+import cz.cuni.mff.ufal.udpipe.MultiwordToken;
+import cz.cuni.mff.ufal.udpipe.MultiwordTokens;
+import cz.cuni.mff.ufal.udpipe.ProcessingError;
+import cz.cuni.mff.ufal.udpipe.Token;
 import cz.cuni.mff.ufal.udpipe.Words;
 import eu.openminted.share.annotations.api.DocumentationResource;
 
@@ -132,24 +135,70 @@ public class UDPipeSegmenter
     protected void process(JCas aJCas, String aText, int aZoneBegin)
         throws AnalysisEngineProcessException
     {
+        
         InputFormat inputFormat = modelProvider.getResource()
                 .newTokenizer(Model.getDEFAULT() + ";ranges");
         inputFormat.setText(aJCas.getDocumentText());
 
         cz.cuni.mff.ufal.udpipe.Sentence sentence = new cz.cuni.mff.ufal.udpipe.Sentence();
+        ProcessingError error = new ProcessingError();
 
-        while (inputFormat.nextSentence(sentence)) {
+        int sentenceIdx = 0;
+        while (inputFormat.nextSentence(sentence, error)) {
+            if (error.occurred()) {
+                throw new AnalysisEngineProcessException(
+                        new IllegalStateException(error.getMessage()));
+            }
+            
+            int sentenceStart = -1;
+            int sentenceEnd = -1;
+
+            int mIdx = 0;
+            MultiwordToken multiword = null;
+            
             Words words = sentence.getWords();
+            MultiwordTokens multiwords = sentence.getMultiwordTokens();
             for (int i = 1; i < words.size(); i++) {
-                Word w = words.get(i);
-                createToken(aJCas, (int) w.getTokenRangeStart() + aZoneBegin,
-                        (int) w.getTokenRangeEnd() + aZoneBegin);
+                
+                if (multiword == null && mIdx < multiwords.size()) {
+                    multiword = multiwords.get(mIdx);
+                    mIdx++;
+                }
+                
+                Token token;
+                if (multiword != null && multiword.getIdFirst() == i) {
+                    token = multiword;
+                    i = multiword.getIdLast();
+                    multiword = null;
+                    
+                } else {
+                    token = words.get(i);
+                }
+                
+                int wordStart = (int) token.getTokenRangeStart();
+                if (i == 1) {
+                    sentenceStart = wordStart;
+                }
+                int wordEnd = (int) token.getTokenRangeEnd();
+
+                sentenceEnd = wordEnd;
+                if (wordStart < 0 || wordEnd < 0 || wordStart > wordEnd) {
+                    throw new AnalysisEngineProcessException(
+                            new IllegalStateException("Invalid word range! (sentence idx: " + sentenceIdx + ", word index: " + i + ", start: " + wordStart + ", end: " + wordEnd + ")"));
+                } else {
+                    createToken(aJCas, wordStart + aZoneBegin, wordEnd + aZoneBegin);
+                }
             }
 
-            createSentence(aJCas, 
-                    (int) words.get(1).getTokenRangeStart() + aZoneBegin,
-                    (int) words.get((int) words.size() - 1).getTokenRangeEnd() + aZoneBegin);
+            if (sentenceStart < 0 || sentenceEnd < 0 || sentenceStart > sentenceEnd) {
+                throw new AnalysisEngineProcessException(
+                        new IllegalStateException("Invalid sentece range! (sentence idx: " + sentenceIdx + ", start: " + sentenceStart + ", end: " + sentenceEnd + ")"));
+            } else {
+                createSentence(aJCas, sentenceStart + aZoneBegin, sentenceEnd + aZoneBegin);
+            }
             sentence = new cz.cuni.mff.ufal.udpipe.Sentence();
+            error = new ProcessingError();
+            sentenceIdx++;
         }
     }
 }
