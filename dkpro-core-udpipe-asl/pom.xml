@@ -117,6 +117,21 @@
       <artifactId>dkpro-core-udpipe-model-parser-no-ud</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.dkpro.core</groupId>
+      <artifactId>dkpro-core-udpipe-model-segmenter-pt-ud</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.dkpro.core</groupId>
+      <artifactId>dkpro-core-udpipe-model-tagger-pt-ud</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.dkpro.core</groupId>
+      <artifactId>dkpro-core-udpipe-model-parser-pt-ud</artifactId>
+      <scope>test</scope>
+    </dependency>     
   </dependencies>
   <dependencyManagement>
     <dependencies>
@@ -150,6 +165,21 @@
         <artifactId>dkpro-core-udpipe-model-parser-no-ud</artifactId>
         <version>20191206.1</version>
       </dependency>
+        <dependency>
+			<groupId>org.dkpro.core</groupId>
+			<artifactId>dkpro-core-udpipe-model-segmenter-pt-ud</artifactId>
+			<version>20191206.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dkpro.core</groupId>
+			<artifactId>dkpro-core-udpipe-model-tagger-pt-ud</artifactId>
+			<version>20191206.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dkpro.core</groupId>
+			<artifactId>dkpro-core-udpipe-model-parser-pt-ud</artifactId>
+			<version>20191206.1</version>
+		</dependency>       
     </dependencies>
   </dependencyManagement>
   <build>
@@ -169,6 +199,9 @@
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-no-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-tagger-no-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-parser-no-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-pt-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-tagger-pt-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-parser-pt-ud</usedDependency>
             </usedDependencies>
           </configuration>
         </plugin>
