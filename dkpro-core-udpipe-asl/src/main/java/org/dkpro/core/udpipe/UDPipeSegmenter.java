@@ -41,7 +41,6 @@ import cz.cuni.mff.ufal.udpipe.MultiwordTokens;
 import cz.cuni.mff.ufal.udpipe.ProcessingError;
 import cz.cuni.mff.ufal.udpipe.Token;
 import cz.cuni.mff.ufal.udpipe.Words;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.TokenForm;
 import eu.openminted.share.annotations.api.DocumentationResource;
 
 /**
