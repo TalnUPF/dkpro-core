@@ -132,6 +132,10 @@
       <artifactId>dkpro-core-udpipe-model-parser-pt-ud</artifactId>
       <scope>test</scope>
     </dependency>     
+    <dependency>
+        <groupId>org.dkpro.core</groupId>
+        <artifactId>dkpro-core-udpipe-model-segmenter-it-ud</artifactId>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
@@ -179,7 +183,12 @@
 			<groupId>org.dkpro.core</groupId>
 			<artifactId>dkpro-core-udpipe-model-parser-pt-ud</artifactId>
 			<version>20191206.1</version>
-		</dependency>       
+		</dependency>
+        <dependency>
+            <groupId>org.dkpro.core</groupId>
+            <artifactId>dkpro-core-udpipe-model-segmenter-it-ud</artifactId>
+            <version>20191206.1</version>
+        </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
