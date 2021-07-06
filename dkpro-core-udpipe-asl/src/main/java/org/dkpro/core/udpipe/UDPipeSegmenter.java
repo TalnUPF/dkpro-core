@@ -160,33 +160,52 @@ public class UDPipeSegmenter
             MultiwordTokens multiwords = sentence.getMultiwordTokens();
             for (int idx = 1; idx < words.size(); idx++) {
                 
+                // Retrieve a multiword from the list, if any
                 if (multiword == null && mIdx < multiwords.size()) {
                     multiword = multiwords.get(mIdx);
                     mIdx++;
                 }
                 
-                Token token;
-                if (multiword != null && multiword.getIdFirst() == idx) {
-                    token = multiword;
-                    idx = multiword.getIdLast();
-                    multiword = null;
+                Token token = words.get(idx);
+
+                int wordStart;
+                int wordEnd;                        
+                if (multiword != null && idx >= multiword.getIdFirst() && idx <= multiword.getIdLast()) {
                     
+                    int componentIdx = idx - multiword.getIdFirst();
+
+                    wordStart = (int) multiword.getTokenRangeStart() + componentIdx;
+                    wordEnd = wordStart + 1;
+                    
+                    if (wordEnd > (int) multiword.getTokenRangeEnd()) {
+                        int start = (int) multiword.getTokenRangeStart();
+                        int end = (int) multiword.getTokenRangeEnd();
+                        throw new AnalysisEngineProcessException(new Exception("A splitted contraction could not be fitted into the word span! (" + (start + aZoneBegin)  + ", " + (end + aZoneBegin) + ")"));
+                    }
+                    
+                    if (idx == multiword.getIdLast()) {
+                        wordEnd =  (int) multiword.getTokenRangeEnd();
+                        multiword = null;
+                    }
+
                 } else {
-                    token = words.get(idx);
+                    wordStart = (int) token.getTokenRangeStart();
+                    wordEnd = (int) token.getTokenRangeEnd();
                 }
-                
-                int wordStart = (int) token.getTokenRangeStart();
+
                 if (sentenceStart == null) {
                     sentenceStart = wordStart;
                 }
-                int wordEnd = (int) token.getTokenRangeEnd();
-
                 sentenceEnd = wordEnd;
                 if (wordStart < 0 || wordEnd < 0 || wordStart > wordEnd) {
                     throw new AnalysisEngineProcessException(
                             new IllegalStateException("Invalid word range! (sentence idx: " + sentenceIdx + ", word index: " + idx + ", start: " + wordStart + ", end: " + wordEnd + ")"));
                 } else {
-                    createToken(aJCas, wordStart + aZoneBegin, wordEnd + aZoneBegin);
+                    de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token dkproToken;
+                    dkproToken = createToken(aJCas, wordStart + aZoneBegin, wordEnd + aZoneBegin);
+                    if (token.getForm() != null) {                        
+                        dkproToken.setText(token.getForm());
+                    }
                 }
             }
 
