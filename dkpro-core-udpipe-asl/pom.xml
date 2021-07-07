@@ -135,6 +135,7 @@
     <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-udpipe-model-segmenter-it-ud</artifactId>
+        <scope>test</scope>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -211,6 +212,7 @@
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-pt-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-tagger-pt-ud</usedDependency>
               <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-parser-pt-ud</usedDependency>
+              <usedDependency>org.dkpro.core:dkpro-core-udpipe-model-segmenter-it-ud</usedDependency>
             </usedDependencies>
           </configuration>
         </plugin>

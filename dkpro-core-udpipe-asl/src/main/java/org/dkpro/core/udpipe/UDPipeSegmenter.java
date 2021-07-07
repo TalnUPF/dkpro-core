@@ -170,7 +170,8 @@ public class UDPipeSegmenter
 
                 int wordStart;
                 int wordEnd;                        
-                if (multiword != null && idx >= multiword.getIdFirst() && idx <= multiword.getIdLast()) {
+                if (multiword != null && idx >= multiword.getIdFirst()
+                    && idx <= multiword.getIdLast()) {
                     
                     int componentIdx = idx - multiword.getIdFirst();
 
